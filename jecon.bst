@@ -39,7 +39,7 @@
 
 
 % version 指定
-FUNCTION {jecon.version} { "5.5" }
+FUNCTION {jecon.version} { "5.6" }
 
 % Debug mode．0 以外を指定すると様々な情報を表示させることが可能．
 FUNCTION {jecon.debug}
