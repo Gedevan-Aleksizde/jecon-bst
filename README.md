@@ -3,7 +3,7 @@ Filename:       README.md
 Author:         Shiro Takeda
 e-mail          <shiro.takeda@gmail.com>
 First-written:  <2006/12/04>
-Time-stamp:     <2019-01-22 14:07:33 st>
+Time-stamp:     <2019-10-14 22:49:49 st>
 -->
 
 jecon.bst
@@ -24,17 +24,17 @@ jecon.bst (経済学用のBibTeX style file) の私家修正版です。
 
 ## ファイル
 
-| ファイル                                    | 説明                                                         |
-|:--------------------------------------------|:-------------------------------------------------------------|
-| `jecon.bst`                                 | これが bst ファイルです。                                    |
-| `jecon-example.tex`                         | 使い方等の説明をしたファイルです。                           |
+| ファイル                                 | 説明                                                         |
+|:-----------------------------------------|:-------------------------------------------------------------|
+| `jecon.bst`                              | これが bst ファイルです。                                    |
+| `jecon-example.tex`                      | 使い方等の説明をしたファイルです。                           |
 | [`jecon-example.pdf`](jecon-example.pdf) | `jecon-example.tex` をPDFにしたものです。                    |
-| `jecon-example.bib`                         | 文献のファイルです。                                         |
-| `jecon-example-old.bib`                     | 文献のファイルです。                                         |
-| `unicode`                                   | ユニコード文字の利用について説明したファイルがあるフォルダ。 |
-| `customization`                             | カスタマイズの例を置いてあるフォルダ。                       |
-| [`CHANGES.md`](CHANGES.md)                | 変更点を説明したファイルです。                               |
-| `README.md`                                 | このファイルです。                                           |
+| `jecon-example.bib`                      | 文献のファイルです。                                         |
+| `jecon-example-old.bib`                  | 文献のファイルです。                                         |
+| [`unicode`](unicode)                     | ユニコード文字の利用について説明したファイルがあるフォルダ。 |
+| [`customization`](customization)         | カスタマイズの例を置いてあるフォルダ。                       |
+| [`CHANGES.md`](CHANGES.md)               | 変更点を説明したファイルです。                               |
+| `README.md`                              | このファイルです。                                           |
 
 <!--
 --------------------
