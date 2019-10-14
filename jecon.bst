@@ -1026,22 +1026,22 @@ FUNCTION {bst.show.doi}
 % DOIの前に付ける文字列 (英語文献用)
 %
 FUNCTION {bst.doi.pre}
-{ ", DOI: \href{https://doi.org/" } % (default)
+{ ", DOI: \href{https://doi.org/" doi * "}{\urlstyle{rm} \nolinkurl{" * } % (default)
 
 % DOIの後に付ける文字列 (英語文献用)
 %
 FUNCTION {bst.doi.post}
-{ "}" }	   % (default)
+{ "}}" }	   % (default)
 
 % DOIの前に付ける文字列 (日本語文献用)
 %
 FUNCTION {bst.doi.pre.jp}
-{ "，DOI：\href{https://doi.org/" }
+{ "，DOI：\href{https://doi.org/" doi * "}{\urlstyle{rm} \nolinkurl{" * }
 
 % DOIの後に付ける文字列 (日本語文献用)
 %
 FUNCTION {bst.doi.post.jp}
-{ "}" }	   % (default)
+{ "}}" }	   % (default)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % eprint (というか arxiv)
@@ -3404,8 +3404,8 @@ FUNCTION {format.doi}
 { doi empty$ bst.show.doi not or
     { "" }
     { is.kanji.entry
-        { bst.doi.pre.jp doi * "}{" * doi * bst.doi.post.jp * }
-        { bst.doi.pre doi * "}{" * doi * bst.doi.post * }
+        { bst.doi.pre.jp doi * bst.doi.post.jp * }
+        { bst.doi.pre doi * bst.doi.post * }
       if$
     }
   if$
