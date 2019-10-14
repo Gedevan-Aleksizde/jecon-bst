@@ -4,7 +4,7 @@
 % Maintainer: Shiro Takeda (武田史郎)
 % Copyright (C) 2002-2018 Shiro Takeda
 % First-written: <2002/11/03>
-% Time-stamp: <2019-01-18 16:45:38 st>
+% Time-stamp: <2019-08-06 22:16:48 st>
 % Version 5.6
 % Keywords: TeX, BibTeX, bst 
 % URL: https://github.com/ShiroTakeda/jecon-bst
@@ -38,7 +38,7 @@
 
 
 % version 指定
-FUNCTION {jecon.version} { "5.6" }
+FUNCTION {jecon.version} { "5.5" }
 
 % Debug mode．0 以外を指定すると様々な情報を表示させることが可能．
 FUNCTION {jecon.debug}
@@ -61,7 +61,6 @@ ENTRY
   { access address author booktitle chapter doi edition editor howpublished
     institution journal key month note number organization pages publisher
     school series title type url volume year yomi language
-    archivePrefix eprinttype eprint
 
     % 以下は普通の bst ファイルでは利用されないフィールド
     jauthor jkanyaku jtitle jpublisher jyear
@@ -948,44 +947,29 @@ FUNCTION {bst.howpublished.post.jp}
 
 % URLフィールド．非ゼロを指定するとURLが表示される．ゼロのときは非表示．
 FUNCTION {bst.show.url}
-{ #2 }    % (default) URL を短縮する (例: retrived from _here_ )
-% { #1 }	% URLを表示
+{ #1 }	  % non-#0 -> URLを表示 (default)
 % { #0 }    % #0 -> URLを非表示
 
 % URLの前に付ける文字列 (英語文献用)
 %
 FUNCTION {bst.url.pre}
-{ bst.show.url #2 =
-    { ", retrieved from \href{" }
-    { ", URL: \url{" }
-    if$
-}
+{ ", URL: \url{" }	% (default)
+
 % URLの後に付ける文字列 (英語文献用)
 %
 FUNCTION {bst.url.post}
-{ bst.show.url #2 =
-    { "}{\textit{here}}" }
-    { "}" }
-if$
-}
+{ "}" }	   % (default)
 
 % URLの前に付ける文字列 (日本語文献用)
 %
 FUNCTION {bst.url.pre.jp}
-{ bst.show.url #2 =
-    { ", retrieved from \href{" }
-    { "，URL：\url{" }
-if$
-}
+{ "，URL：\url{" }	% (default)
 
 % URLの後に付ける文字列 (日本語文献用)
 %
 FUNCTION {bst.url.post.jp}
-{ bst.show.url #2 =
-    { "}{\textit{here}}" }
-    { "}" }
-if$
-}
+{ "}" }	   % (default)
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Access
@@ -1086,7 +1070,17 @@ FUNCTION {bst.eprint.post.jp}
 
 
 % URL と DOI の表示方法
-% 常に DOI > eprint > url で優先して表示します.
+%
+% DOI と URL が両方あるケースの DOI と URL の処理方法
+%
+% #0 -> 両方表示
+% #1 -> URL のみ表示
+% #2 -> DOI のみ表示
+%
+FUNCTION {bst.url.doi}
+% { #0 }    % (default) -> 両方表示
+% { #1 }    % -> URL のみ表示
+{ #2 }	  % -> DOI のみ表示
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	邦訳書
@@ -3168,26 +3162,6 @@ FUNCTION {format.organization}
   if$
 }
 
-%%% eprint (特に arxiv) の整形
-FUNCTION {format.eprint}
-{ eprinttype empty$
-    { "" }
-    { eprinttype "arxiv" = %eprint empty$ not and
-        { bst.show.eprint #1 =
-            { is.kanji.entry
-                { bst.eprint.pre.jp eprint * "}{" * eprint * bst.eprint.post.jp * }
-                { bst.eprint.pre eprint * "}{" * eprint * bst.eprint.post * }
-                if$
-            }
-            { "" }
-            if$
-        }
-        { "" }
-        if$
-    }
-if$
-}
-
 %% publisher と address を出力する関数
 FUNCTION {output.publisher.address}
 { address empty$
@@ -3411,21 +3385,25 @@ FUNCTION {format.doi}
   if$
 }
 
-FUNCTION {format.doi.eprint.url}
-{ doi empty$
-    { format.eprint empty$
-        { url empty$
-            { "" }
-            { format.url }
-            if$ 
-        }
-        { format.eprint }
-        if$
-    }
+FUNCTION {format.url.doi}
+{ url empty$
     { format.doi }
-    if$
+    { doi empty$
+	{ format.url }
+	{ bst.url.doi #0 =
+	    { format.url output.nocomma
+	      format.doi }
+	    { bst.url.doi #1 =
+		{ format.url } 
+		{ format.doi }
+	      if$
+	    }
+	  if$
+	}
+      if$
+    }
+  if$
 }
-
 
 FUNCTION {format.note}
 { note empty$
@@ -3544,9 +3522,7 @@ FUNCTION {article}
     { format.month output.nocomma }
   if$
 
-  %format.url.doi output.nocomma
-  format.doi.eprint.url output.nocomma
-
+  format.url.doi output.nocomma
   format.note output.nocomma
   fin.entry
 }
@@ -3580,9 +3556,8 @@ FUNCTION {book}
     'skip$
   if$
 
-  format.doi.eprint.url output.nocomma
-
   format.hoyakusho output.nocomma
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3598,7 +3573,7 @@ FUNCTION {booklet}
   format.howpublished output.nocomma
   format.address output.nocomma
 
-  format.doi.eprint.url output.nocomma
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3631,7 +3606,7 @@ FUNCTION {inbook}
     'skip$
   if$
 
-  format.doi.eprint.url output.nocomma
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3650,16 +3625,16 @@ FUNCTION {incollection}
 
   format.in.ed.booktitle "booktitle" output.check.nocomma
   format.bvolume output.nocomma
-  output.address.organization.publisher
   format.edition output.nocomma
   format.chapter.pages output.nocomma
+  output.address.organization.publisher
 
   bst.year.position #0 = not
     { format.year "year" output.check.nocomma }
     'skip$
   if$
 
-  format.doi.eprint.url output.nocomma
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3686,8 +3661,8 @@ FUNCTION {inproceedings}
     { format.date output.nocomma }
     { format.month output.nocomma }
   if$
-  
-  format.doi.eprint.url output.nocomma
+
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3734,7 +3709,7 @@ FUNCTION {manual}
     'skip$
   if$
 
-  format.doi.eprint.url output.nocomma
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3759,7 +3734,7 @@ FUNCTION {mastersthesis}
     'skip$
   if$
 
-  format.doi.eprint.url output.nocomma
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3783,7 +3758,8 @@ FUNCTION {misc}
     { format.date output.nocomma }
     { format.month output.nocomma }
   if$
-  format.doi.eprint.url output.nocomma
+
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3808,8 +3784,8 @@ FUNCTION {online}
     { format.date output.nocomma }
     { format.month output.nocomma }
   if$
-  
-  format.doi.eprint.url output.nocomma
+
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3839,7 +3815,7 @@ FUNCTION {phdthesis}
     'skip$
   if$
 
-  format.doi.eprint.url output.nocomma
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3867,7 +3843,7 @@ FUNCTION {proceedings}
     'skip$
   if$
 
-  format.doi.eprint.url output.nocomma
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3893,7 +3869,7 @@ FUNCTION {techreport}
     'skip$
   if$
 
-  format.doi.eprint.url output.nocomma
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
@@ -3919,7 +3895,7 @@ FUNCTION {unpublished}
     }
   if$
 
-  format.doi.eprint.url output.nocomma
+  format.url.doi output.nocomma
 
   format.note output.nocomma
   fin.entry
