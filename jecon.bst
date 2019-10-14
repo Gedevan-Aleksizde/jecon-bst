@@ -1,7 +1,8 @@
 %% jecon.bst: 経済学用 BibTeX スタイルファイル（BibTeX style file for economics）
+% home-made modified version
 %
-% Author: Shiro Takeda (武田史郎)
-% Maintainer: Shiro Takeda (武田史郎)
+% Original Author: Shiro Takeda (武田史郎)
+% Original Maintainer: Shiro Takeda (武田史郎)
 % Copyright (C) 2002-2018 Shiro Takeda
 % First-written: <2002/11/03>
 % Time-stamp: <2019-08-06 22:16:48 st>
