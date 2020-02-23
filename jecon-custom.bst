@@ -60,11 +60,11 @@ ENTRY
   %%% 文献フィールドの宣言
   { access address author booktitle chapter doi edition editor howpublished
     institution journal key month note number organization pages publisher
-    school series title type url volume year yomi language
+    school series title type url volume year yomi language isbn
     archivePrefix eprinttype eprint
 
     % 以下は普通の bst ファイルでは利用されないフィールド
-    jauthor jkanyaku jtitle jpublisher jyear
+    jauthor jkanyaku jtitle jpublisher jyear jnote
     order absorder translator kanyaku nameorder
   }
 
@@ -3338,7 +3338,8 @@ FUNCTION {format.hoyakusho}
   jtitle empty$
   jpublisher empty$
   jyear empty$
-  and and and and
+  jnote empty$
+  and and and and and
     { "" }
     {
       is.kanji.entry
@@ -3369,11 +3370,14 @@ FUNCTION {format.hoyakusho}
       if$
       jyear empty$
 	{ "" * }
-	{ "" * jyear convert.year.kanji * "年" * }
+	{ "" * jyear convert.year.kanji * "年" * bst.touten.jp * }
+      if$ jnote empty$
+    { "" * }
+    { "" * jnote *}
       if$
       remove.irrelevant.kutoten bst.hoyakusho.post.jp *
     }
- if$
+     if$
 }
 
 FUNCTION {format.url}
@@ -3582,10 +3586,8 @@ FUNCTION {book}
   if$
 
   format.doi.eprint.url output.nocomma
-
-  format.hoyakusho output.nocomma
-
   format.note output.nocomma
+  format.hoyakusho output.nocomma
   fin.entry
 }
 
@@ -3598,9 +3600,7 @@ FUNCTION {booklet}
   format.misc.title "title" output.check.nocomma
   format.howpublished output.nocomma
   format.address output.nocomma
-
   format.doi.eprint.url output.nocomma
-
   format.note output.nocomma
   fin.entry
 }
@@ -3631,9 +3631,7 @@ FUNCTION {inbook}
     { format.year "year" output.check.nocomma }
     'skip$
   if$
-
   format.doi.eprint.url output.nocomma
-
   format.note output.nocomma
   fin.entry
 }
@@ -3661,7 +3659,6 @@ FUNCTION {incollection}
   if$
 
   format.doi.eprint.url output.nocomma
-
   format.note output.nocomma
   fin.entry
 }
