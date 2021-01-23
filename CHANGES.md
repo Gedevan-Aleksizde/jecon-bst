@@ -3,13 +3,48 @@ Filename:       CHANGES.txt
 Author:         Shiro Takeda
 e-mail          <shiro.takeda@gmail.com>
 First-written:  <2006/12/04>
-Time-stamp:     <2020-06-23 13:32:57 st>
+Time-stamp:     <2021-01-23 16:30:42 st>
 -->
 
 jecon.bst の変更履歴．
 ==============================
 
 ## 変更点（上が新しい）
+
+## Ver. 6.2.1
+
+* 2021-01-23: クラスファイルの変更。jlreq や jsarticle に変更。
+
+* 2021-01-23: 英語文献に翻訳書情報を付ける際のバグを修正。
+
+
+## Ver. 6.2
+
+* 2020-11-15: ユニコード文字用の修正。日本語、中国語、韓国語を同時に利用している
+  サンプルのファイル "jecon-unicode-lualatex-cjk.tex" を unicode フォルダに追加。
+  それにともない、"multi-lang.bib"と"jecon-unicode-lualatex-cjk.pdf"も追加。
+
+* 2020-11-01: month の指定では省略形（jan, febなど）が利用できるが、その指定は
+
+  month = jan
+  
+  のような形式で、"" や {} で囲んではいけないことになっていた。これを
+  
+  month = "jan"
+  
+  のように指定されていても、Janurary に変換するように修正した。
+  
+  
+
+
+## Ver. 6.1
+
+* 2020-07-10: 邦訳書情報のノート用のフィールド `jnote` を追加。また、邦訳書情報
+  を最後に持ってくるように位置を修正。詳しくは `jecon-example.pdf` の「邦訳書の
+  情報も付ける場合」という節を見てください。
+
+
+## Ver. 6.0
 
 * 2020-06-23: 著者数が非常に多いときの処理の変更。
 

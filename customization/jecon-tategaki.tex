@@ -3,10 +3,16 @@
 
 % Author:	       Shiro Takeda
 % First-written:       <2002/11/02>
-% Time-stamp:	       <2019-03-12 21:52:56 st>
 %
 %############################## Main #################################
-\documentclass[10pt]{tarticle}
+
+% クラスファイルに jlreq を利用。
+% pLaTeX でコンパイル。
+% platex を使う場合は plautopatch パッケージを読み込んでおく。
+\RequirePackage{plautopatch}
+\documentclass[article,tate,dvipdfmx]{jlreq}
+
+\usepackage{bxjalipsum}
 
 %% natbib.sty を使う。
 \usepackage[longnamesfirst]{natbib}
@@ -23,22 +29,10 @@ colorlinks=true,%
 linkcolor=MyBlue,%
 citecolor=MyRed,%
 filecolor=MyBlue,%
-pagecolor=MyBlue,%
 urlcolor=MyGreen%
 ]{hyperref}
 
-\setlength{\topmargin}{-20pt} 
-\setlength{\textheight}{648pt}
-\setlength{\oddsidemargin}{15pt}
-\setlength{\textwidth}{440pt}
-
 \bibpunct{\hskip-0.5em（}{）\hskip-0.5em}{}{}{}{}
-
-% dvipdfmx の縦書き用オプション
-\AtBeginDvi{\special{landscape}}
-
-% \DeclareFontShape{JY1}{mc}{m}{n}{<-> s * [0.961] jis}{}
-% \DeclareFontShape{JY1}{gt}{m}{n}{<-> s * [0.961] jisg}{}
 
 %#####################################################################
 %######################### Document Starts ###########################
@@ -48,7 +42,12 @@ urlcolor=MyGreen%
 \verb|\bibliographystyle| に \verb|jecon-tategaki.bst| を指定したもの。
 \vspace*{1em}
 
-クラスファイルに \texttt{tarticle} クラスを利用している。さらに、プリアンプルで
+クラスファイルに \texttt{jlreq} クラスを利用し、\texttt{platex} でコンパイルして
+います（途中でエラーが出ますが、無視してコンパイルしてください）。
+
+\vspace*{1em}
+
+また、プリアンプルで
 \begin{verbatim}
         \bibpunct{\hskip-0.5em（}{）\hskip-0.5em}{}{}{}{}
 \end{verbatim}
@@ -56,16 +55,11 @@ urlcolor=MyGreen%
 うしないと引用部分で半角括弧が利用されるため、少し見た目がぶかっこうにな
 る。
 
-また、
-\begin{verbatim}
-        \AtBeginDvi{\special{landscape}}
-\end{verbatim}
-と設定し、用紙を landscape （横向き）にしている。
-\vspace*{2em}
+\vspace*{1em}
 
 引用例を4つ。\citet{ishikawa03:_green_gas_emiss_contr_open_econom}、
 \citet{takeda06:_cge_analy_welfar_effec_trade} は英語の論文。
-\citet{oyama99:_mark_stru} と \citet{kuroda97jp:keo} は日本語の論文。
+\citet{oyama99:_mark_stru}  \citet{kuroda97jp:keo} は日本語の論文。
 
 \nocite{*}
 

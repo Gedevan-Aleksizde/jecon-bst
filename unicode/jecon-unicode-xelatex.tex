@@ -7,14 +7,8 @@
 %
 %############################## Main #################################
 
-%% 以下は xelatex 用の設定。
-\documentclass[a4paper,10pt]{bxjsarticle}
-
-%% 以下は xelatex 用の設定。
-\usepackage{fontspec}
-\usepackage{xltxtra}
-\usepackage{zxjatype}
-\usepackage[ipa]{zxjafont}
+%% bxjsarticle クラスを利用。
+\documentclass[xelatex,ja=standard]{bxjsarticle}
 
 %% 以下は共通の設定
 \usepackage{natbib}
@@ -22,6 +16,8 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{ulem}
 
+%% Font を変更 → Times系に．
+\usepackage{newtxtext,newtxmath}
 %% 色を付ける．
 \usepackage{graphicx}
 \usepackage{color}
@@ -36,13 +32,12 @@ colorlinks=true,%
 linkcolor=MyBlue,%
 citecolor=MyRed,%
 filecolor=MyBlue,%
-pagecolor=MyBlue,%
 urlcolor=MyGreen%
 ]{hyperref}
 
-%% \BibTeX command を定義．
 \makeatletter
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%% \BibTeX command を定義．
+\newcommand{\BibTeX}{\textrm{B\kern-.05em\textsc{i\kern-.025em b}\kern-.08em%
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \makeatother
 

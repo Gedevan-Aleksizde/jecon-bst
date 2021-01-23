@@ -7,17 +7,12 @@
 %
 %############################## Main #################################
 
-%% 以下は lualatex 用の設定。
-\documentclass{ltjsarticle}
+%% jlreq クラスを利用
+\documentclass[article]{jlreq}
 
 %% 以下は lualatex 用の設定。
 \usepackage[no-math]{fontspec}
 \usepackage{luatexja-fontspec}
-
-\usepackage{luatexja-preset}
-% \usepackage[morisawa-pro]{luatexja-preset}
-% \usepackage[ms]{luatexja-preset}
-% \usepackage[sourcehan-jp]{luatexja-preset}
 
 %% 以下は共通の設定
 \usepackage{natbib}
@@ -25,6 +20,8 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{ulem}
 
+%% Font を変更 → Times系に．
+\usepackage{newtxtext,newtxmath}
 %% 色を付ける．
 \usepackage{graphicx}
 \usepackage{color}
@@ -44,15 +41,9 @@ filecolor=MyBlue,%
 urlcolor=MyGreen%
 ]{hyperref}
 
-%% textwidth等の変更．
-\setlength{\textwidth}{140truemm}
-\setlength{\fullwidth}{\textwidth}
-\setlength{\oddsidemargin}{35truemm}
-\addtolength{\oddsidemargin}{-1truein}
-
 \makeatletter
 %% \BibTeX command を定義．
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+\newcommand{\BibTeX}{\textrm{B\kern-.05em\textsc{i\kern-.025em b}\kern-.08em%
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \makeatother
 
@@ -229,11 +220,10 @@ Version 5.0 より前の \texttt{jecon.bst} ではユニコード文字の利用
 \textbf{その2：\texttt{language} フィールドの追加}
 \begin{itemize}
  \item \textbf{日本語の文献には必ず \texttt{language} フィールドというフィールド
-       を追加し，その値に「\texttt{ja}」（あるいは「日本語」）を指定してください．}
-       \verb|language = {ja}| （あるいは，\verb|language = {日本語}|）というよう
-       にです\footnote{「\texttt{ja}」 という指定でも，「日本語」でもどちらでも
-       いいのですが，以下の説明では「\texttt{ja}」という指定を使うものとして説明
-       します．}．
+       を追加し，その値に「\texttt{ja}」（あるいは「日本語」）を指定してくださ
+       い．} \verb|language = {ja}| （あるいは，\verb|language = {日本語}|）とい
+       うようにです\footnote{「\texttt{jpn}」でもいいです。どれでもいいのですが，
+       以下の説明では「\texttt{ja}」という指定を使うものとして説明します．}．
  \item 「日本語の文献」とは中身が日本語で書かれた文献のことです．外国人が
        書いたものでも，邦訳書は日本語の文献です．
  \item \texttt{language} フィールドの値が \texttt{ja} のときに
@@ -470,5 +460,6 @@ Caaaaa and Smith, James」のようにアルファベットなので，本来著
 % Local Variables:
 % fill-column: 80
 % coding: utf-8-dos
+% eval: (setenv "LANG" "ja_JP.UTF-8")
 % End:
 

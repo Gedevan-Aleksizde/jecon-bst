@@ -1,13 +1,15 @@
-%#!uplatex
+%#!uplatex 
 %#BIBTEX upbibtex jecon-unicode-uplatex.aux
 % 
 % このファイルは uplatex でコンパイルすることを前提で作成しています。
 %
 %############################## Main #################################
 
-%% 以下は uplatex 用の設定。
-\documentclass[a4j,10pt]{ujarticle}
-%\documentclass[10pt,uplatex]{jsarticle} % jsarticle を利用するケース
+% uplatex でコンパイルするので、plautopatch パッケージを読み込む。
+\RequirePackage{plautopatch}
+
+%% jsarticle クラスを利用。
+\documentclass[uplatex,dvipdfmx]{jsarticle}
 
 \usepackage[T1]{fontenc}
 
@@ -15,6 +17,8 @@
 \usepackage{url}
 \usepackage{amsmath,amssymb,amsthm}
 
+%% Font を変更 → Times系に．
+\usepackage{newtxtext,newtxmath}
 %% 色を付ける．
 \usepackage{graphicx}
 \usepackage{color}
@@ -28,36 +32,22 @@ colorlinks=true,%
 linkcolor=MyBlue,%
 citecolor=MyRed,%
 filecolor=MyBlue,%
-pagecolor=MyBlue,%
 urlcolor=MyGreen%
 ]{hyperref}
 
 % 以下の命令を入れておかないと \DH が定義されていないというエラーとなる。
-\renewcommand{\DH}{\fontencoding{T1}\selectfont{\symbol{240}}}
-
-%% \BibTeX command を定義．
-\makeatletter
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
-\makeatother
+% \renewcommand{\DH}{\fontencoding{T1}\selectfont{\symbol{240}}}
 
 %#####################################################################
 %######################### Document Starts ###########################
 %#####################################################################
 \begin{document}
 
-% uplatex では以下のコードが必要。これがないと欧文のユニコード文字が間延びする。
-% \kcatcode`ç=15% not cjk character
-
 \begin{flushleft}
  {\Large \textbf{upLaTeX (\texttt{uplatex}) を利用するケース}}
 \end{flushleft}
 
 \vspace{1em}
-
-% This document contains English, Română, 日本語,
-% \foreignlanguage{greek}{Ελληνικά}, and
-% \foreignlanguage{russian}{русский язык}.
 
 \section{使い方}
 

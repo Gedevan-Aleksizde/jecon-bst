@@ -5,12 +5,16 @@
 %% Author:              Shiro Takeda
 %% e-mail               <shiro.takeda@gmail.com>
 %% First-written:       <2002/11/02>
-%% Time-stamp:          <2020-06-23 13:26:52 st>
 %%
 %% jecon.bst の使い方を説明するファイル
 %%
 %############################## Main #################################
-\documentclass[a4j,10pt]{jarticle}
+
+% クラスファイル → jsarticle を利用。
+% jsarticle ではエンジンを指定する → ここでは platex でコンパイル。
+% platex を使う場合は plautopatch パッケージを読み込んでおく。
+\RequirePackage{plautopatch}
+\documentclass[platex]{jsarticle}
 
 %% natbib.sty を使う．
 \usepackage{natbib}
@@ -37,42 +41,11 @@ colorlinks=true,%
 linkcolor=MyBlue,%
 citecolor=MyRed,%
 filecolor=MyBlue,%
-pagecolor=MyBlue,%
 urlcolor=MyGreen%
 ]{hyperref}
 
 %% dvipdfmx で PDF に修正したときにしおりが文字化けしないようにするための設定．
 \AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}}%SJIS
-
-%% \BibTeX command を定義．
-\makeatletter
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
-    \makeatother
-
-%% footnote 環境を再定義 (jsclasses.dtx より）．footnote 環境で \verb 命
-%% 令を利用できるようにする．
-\makeatletter
-\long\def\@footnotetext{%
-  \insert\footins\bgroup
-    \normalfont\footnotesize
-    \interlinepenalty\interfootnotelinepenalty
-    \splittopskip\footnotesep
-    \splitmaxdepth \dp\strutbox \floatingpenalty \@MM
-    \hsize\columnwidth \@parboxrestore
-    \protected@edef\@currentlabel{%
-       \csname p@footnote\endcsname\@thefnmark
-    }%
-    \color@begingroup
-      \@makefntext{%
-        \rule\z@\footnotesep\ignorespaces}%
-      \futurelet\next\fo@t}
-\def\fo@t{\ifcat\bgroup\noexpand\next \let\next\f@@t
-                                \else \let\next\f@t\fi \next}
-\def\f@@t{\bgroup\aftergroup\@foot\let\next}
-\def\f@t#1{#1\@foot}
-\def\@foot{\@finalstrut\strutbox\color@endgroup\egroup}
-\makeatother
 
 \makeatletter
 \ifx\undefined\bysame
@@ -81,7 +54,7 @@ urlcolor=MyGreen%
 \makeatother
 
 %%% title, author, acknowledgement, and date
-\title{\texttt{jecon.bst}:\\ 経済学用 \BibTeX{} スタイルファイル\\ (ver. 6.0)
+\title{\texttt{jecon.bst}:\\ 経済学用 \BibTeX{} スタイルファイル\\ (ver. 6.2.1)
 \thanks{このファイルの配布場所: \url{https://github.com/ShiroTakeda/jecon-bst}}
 }
 
@@ -128,7 +101,7 @@ urlcolor=MyGreen%
 \texttt{jalpha.bst}，\texttt{jabbrev.bst} 等のように日本語の文献にも対応している
 ものがすでに幾つもあります．しかし，これらのスタイルファイルでは，経済学でよく用
 いられる author-year 形式，つまり「著者名（年）」という形式で引用することはできま
-せん\footnote{\verb|\cite| 命令を使ったときのはなしです．}．また，Reference に列
+せん\footnote{\texttt{cite} 命令を使ったときのはなしです．}．また，Reference に列
 挙する形式も経済学で通常使われている形式とは異なっています．
 
 一方，経済学で用いられる参照形式を実現する \BibTeX スタイルファイルとして，
@@ -217,7 +190,7 @@ Reference 部分の形式がどうなるかは，この文書の参考文献の�
 \end{screen}
 
 こう出力するには次のように \texttt{tex} のファイルで書きます
-\footnote{\verb|\citet| や \verb|\citep| は \texttt{natbib.sty} に特有の命令です．}．
+\footnote{\texttt{citet} や \texttt{citep} は \texttt{natbib.sty} に特有の命令です．}．
 
 \begin{screen}
  \begin{verbatim}
@@ -385,10 +358,11 @@ Reference 部分の形式がどうなるかは，この文書の参考文献の�
 \subsubsection{邦訳書の情報も付ける場合} \label{sec:hoyakusho}
 
 また book に関しては，以下のように \texttt{jauthor}，\texttt{jkanyaku}，
-\texttt{jtitle}，\texttt{jpublisher}，\texttt{jyear} を指定することで邦訳書の情
-報を付け加えることができます（これは \texttt{jpolisci.bst} の機能をそのまま使わ
-せていただいています）．以下の指定が参考文献部分にどう反映されるかは，後の参考文
-献部分を見て確認してください．\\
+\texttt{jtitle}，\texttt{jpublisher}，\texttt{jyear}, \texttt{jnote} を指定する
+ことで邦訳書の情報を付け加えることができます（これは \texttt{jpolisci.bst} の機
+能に \texttt{jnote} を新たに追加させていただいています）．以下の指定が参考文献部
+分にどう反映されるかは，後の参考文献部分の\cite{fujita99jp:_spatial_econom},
+\cite{romer19jp:_advan_macroecon}を見て確認してください．\\
 
 \begin{screen}
  \begin{verbatim}
@@ -398,10 +372,30 @@ Reference 部分の形式がどうなるかは，この文書の参考文献の�
   publisher =    {MIT Press},
   address =      {Cambridge, MA},
   year =         1999,
+  note =         {紹介ページ: \url{https://mitpress.mit.edu/books/spatial-economy}},
   jauthor =      {小出, 博之},
   jtitle =       {空間経済学},
   jpublisher =   {東洋経済新報社},
-  jyear =        2000
+  jyear =        2000,
+  jnote =        {和訳紹介ページ: \url{https://str.toyokeizai.net/books/9784492312858/}}
+}
+ \end{verbatim}
+\end{screen}
+\vspace*{1em}
+\begin{screen}
+ \begin{verbatim}
+@book{romer19jp:_advan_macroecon,
+  author     = {Romer, David},
+  title      = {Advanced Macroeconomics},
+  publisher  = {McGraw Hill},
+  address    = {New York, NY},
+  year       = {2019},
+  edition    = {5th},
+  jauthor    = {堀, 雅博 and 岩成, 博夫 and 南條, 隆},
+  jtitle     = {上級マクロ経済学},
+  jyear      = {2010},
+  jpublusher = {日本評論社},
+  jnote      = {原著第3版訳}
 }
  \end{verbatim}
 \end{screen}
@@ -448,7 +442,7 @@ Reference 部分の形式がどうなるかは，この文書の参考文献の�
        で書いてしまうと上手く処理されません（参考文献部分において表記がおかしく
        なります）\footnote{具体的には，参考文献部分で「バローロバート」というよ
        うな名前の表記になります．どうしてもどちらも片仮名で書きたい場合には，
-       \verb|{ロバート・バロー}| と書いてください．ただし，この場合には引用部分
+       \texttt{\{ロバート・バロー\}} と書いてください．ただし，この場合には引用部分
        が，バロー (1997) ではなく，ロバート・バロー (1997) という形式になってし
        まいます．}．
  \item この場合も \texttt{yomi} フィールドを付けないと適切には並びかえられま
@@ -552,17 +546,18 @@ Obama であるときには
 普通とは異なり，日本語文献でも英語文献と同様の指定方法を採用しているのは，そうし
 ないと困る場合が最近多くなってきたためです．
 
-まず第一にMendeley\footnote{\url{http://www.mendeley.com/}}のような文献管理ソフ
-トを利用して文献を管理し，そこから\texttt{bib}ファイルを生成するというような場合
-です．文献管理ソフトでは英語文献の人名であろうが，日本語文献の人名であろうが，普
-通は同じ扱いをすると思います．実際，私もMendeleyを利用していますが，英語文献でも
-日本語文献でも同じように人名を扱っています（日本語文献は姓名を逆に登録するという
-ようなことはしません）．そうしないと著者名（姓）をキーにして表示する文献にフィル
-ターをかけるときなどに困るからです．このように人名の扱いが同じため，Mendeleyから
-\texttt{bib}ファイルを生成させると日本語文献の人名も英語文献の人名と同じ形の出力
-になります．こうして生成した\texttt{bib}ファイルを通常の\texttt{bst}ファイルで処
-理してしまうと日本語文献の人名の扱いがおかしくなってしまいます（姓名の順序が逆に
-なってしまいます）．\vspace*{1em}
+まず第一にZotero\footnote{\url{https://www.zotero.org/}}や
+Mendeley\footnote{\url{http://www.mendeley.com/}}のような文献管理ソフトを利用し
+て文献を管理し，そこから\texttt{bib}ファイルを生成するというような場合です．文献
+管理ソフトでは英語文献の人名であろうが，日本語文献の人名であろうが，普通は同じ扱
+いをすると思います．実際，私もZoteroを利用していますが，英語文献でも日本語文献で
+も同じように人名を扱っています（日本語文献は姓名を逆に登録するというようなことは
+しません）．そうしないと著者名（姓）をキーにして表示する文献にフィルターをかける
+ときなどに困るからです．このように人名の扱いが同じため，Zotero から\texttt{bib}
+ファイルを生成させると日本語文献の人名も英語文献の人名と同じ形の出力になります．
+こうして生成した\texttt{bib}ファイルを通常の\texttt{bst}ファイルで処理してしまう
+と日本語文献の人名の扱いがおかしくなってしまいます（姓名の順序が逆になってしまい
+ます）．\vspace*{1em}
 
 もう一つは文献データベースで日本語文献も英語文献と同じように人名を扱っているケー
 スがあることです．例えば，CiNiiという日本語の論文，書籍，雑誌のデータベースを提供
@@ -1106,7 +1101,7 @@ FUNCTION {bst.year.backward}
 思いますが，数字を漢数字に変換する機能も付いています．これには 
 \texttt{bst.kansuji.jp} という関数の中身を 0 以外に変更します\footnote
 {数字を漢数字にするには，\LaTeX の \texttt{plext} スタイルの 
-\verb|\kanji| 命令を利用する方法がありますが，ここでは bst ファイルの中
+\texttt{kanji} 命令を利用する方法がありますが，ここでは bst ファイルの中
 で直接数字 $\rightarrow$ 漢数字の変換をおこなっています．}．
 \begin{screen}
 \begin{verbatim}
